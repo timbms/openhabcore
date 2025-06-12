@@ -18,6 +18,8 @@ import java.util.List;
 
 import org.openhab.core.io.rest.core.item.EnrichedItemDTO;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 /**
  * This is a data transfer object that is used to serialize widgets.
  *
@@ -30,9 +32,14 @@ import org.openhab.core.io.rest.core.item.EnrichedItemDTO;
  * @author Laurent Garnier - Remove field columns
  * @author Laurent Garnier - New fields row, column, command, releaseCommand and stateless for Button element
  */
-public class WidgetDTO {
 
+@Schema(description = "A widget that may contain nested child widgets")
+public class WidgetDTO {
+    
+    @Schema(description = "Unique widget ID")
     public String widgetId;
+
+    @Schema(description = "Widget type (e.g., Frame, Switch, etc.)")
     public String type;
     public String name;
     public boolean visibility;
@@ -81,6 +88,7 @@ public class WidgetDTO {
     public PageDTO linkedPage;
 
     // only for frames and button grids, other linkable widgets link to a page
+    @Schema(description = "Nested widgets for container widgets like Frame or Button Grids")
     public final List<WidgetDTO> widgets = new ArrayList<>();
 
     public WidgetDTO() {
