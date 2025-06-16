@@ -195,9 +195,7 @@ public class SitemapResourceTest extends JavaTest {
         executeWithDelay(() -> sitemapResource.receive(itemEvent));
 
         // non-null is sufficient here.
-        when(headersMock.getRequestHeader(HTTP_HEADER_X_ATMOSPHERE_TRANSPORT)).thenReturn(List.of());
-
-        Response response = sitemapResource.getSitemapData(headersMock, null, SITEMAP_MODEL_NAME, null, false);
+        Response response = sitemapResource.getSitemapData(headersMock, null, SITEMAP_MODEL_NAME, null, false, "long-polling");
 
         SitemapDTO sitemapDTO = (SitemapDTO) response.getEntity();
         // assert that the item state change did trigger the blocking method to return
@@ -215,10 +213,8 @@ public class SitemapResourceTest extends JavaTest {
         executeWithDelay(() -> sitemapResource.receive(itemEvent));
 
         // non-null is sufficient here.
-        when(headersMock.getRequestHeader(HTTP_HEADER_X_ATMOSPHERE_TRANSPORT)).thenReturn(List.of());
-
         Response response = sitemapResource.getPageData(headersMock, null, SITEMAP_MODEL_NAME, SITEMAP_NAME, null,
-                false);
+                false, "long-polling");
 
         PageDTO pageDTO = (PageDTO) response.getEntity();
         // assert that the item state change did trigger the blocking method to return
@@ -232,10 +228,8 @@ public class SitemapResourceTest extends JavaTest {
         executeWithDelay(() -> sitemapResource.receive(itemEvent));
 
         // non-null is sufficient here.
-        when(headersMock.getRequestHeader(HTTP_HEADER_X_ATMOSPHERE_TRANSPORT)).thenReturn(List.of());
-
         Response response = sitemapResource.getPageData(headersMock, null, SITEMAP_MODEL_NAME, SITEMAP_NAME, null,
-                false);
+                false, "long-polling");
 
         PageDTO pageDTO = (PageDTO) response.getEntity();
         // assert that the item state change did trigger the blocking method to return
@@ -249,10 +243,8 @@ public class SitemapResourceTest extends JavaTest {
         executeWithDelay(() -> sitemapResource.receive(itemEvent));
 
         // non-null is sufficient here.
-        when(headersMock.getRequestHeader(HTTP_HEADER_X_ATMOSPHERE_TRANSPORT)).thenReturn(List.of());
-
         Response response = sitemapResource.getPageData(headersMock, null, SITEMAP_MODEL_NAME, SITEMAP_NAME, null,
-                false);
+                false, "long-polling");
 
         PageDTO pageDTO = (PageDTO) response.getEntity();
         // assert that the item state change did trigger the blocking method to return
@@ -266,10 +258,8 @@ public class SitemapResourceTest extends JavaTest {
         executeWithDelay(() -> sitemapResource.receive(itemEvent));
 
         // non-null is sufficient here.
-        when(headersMock.getRequestHeader(HTTP_HEADER_X_ATMOSPHERE_TRANSPORT)).thenReturn(List.of());
-
         Response response = sitemapResource.getPageData(headersMock, null, SITEMAP_MODEL_NAME, SITEMAP_NAME, null,
-                false);
+                false, "long-polling");
 
         PageDTO pageDTO = (PageDTO) response.getEntity();
         // assert that the item state change did trigger the blocking method to return
@@ -283,10 +273,8 @@ public class SitemapResourceTest extends JavaTest {
         executeWithDelay(() -> sitemapResource.receive(itemEvent));
 
         // non-null is sufficient here.
-        when(headersMock.getRequestHeader(HTTP_HEADER_X_ATMOSPHERE_TRANSPORT)).thenReturn(List.of());
-
         Response response = sitemapResource.getPageData(headersMock, null, SITEMAP_MODEL_NAME, SITEMAP_NAME, null,
-                false);
+                false, "long-polling");
 
         PageDTO pageDTO = (PageDTO) response.getEntity();
         assertThat(pageDTO.timeout, is(false)); // assert that the item state change did trigger the blocking method to
@@ -300,10 +288,8 @@ public class SitemapResourceTest extends JavaTest {
         executeWithDelay(() -> sitemapResource.receive(itemEvent));
 
         // non-null is sufficient here.
-        when(headersMock.getRequestHeader(HTTP_HEADER_X_ATMOSPHERE_TRANSPORT)).thenReturn(List.of());
-
         Response response = sitemapResource.getPageData(headersMock, null, SITEMAP_MODEL_NAME, SITEMAP_NAME, null,
-                false);
+                false, "long-polling");
 
         PageDTO pageDTO = (PageDTO) response.getEntity();
         assertThat(pageDTO.timeout, is(false)); // assert that the item state change did trigger the blocking method to
@@ -317,10 +303,8 @@ public class SitemapResourceTest extends JavaTest {
         executeWithDelay(() -> sitemapResource.receive(itemEvent));
 
         // non-null is sufficient here.
-        when(headersMock.getRequestHeader(HTTP_HEADER_X_ATMOSPHERE_TRANSPORT)).thenReturn(List.of());
-
         Response response = sitemapResource.getPageData(headersMock, null, SITEMAP_MODEL_NAME, SITEMAP_NAME, null,
-                false);
+                false, "long-polling");
 
         PageDTO pageDTO = (PageDTO) response.getEntity();
         // assert that the item state change did trigger the blocking method to return
@@ -344,10 +328,8 @@ public class SitemapResourceTest extends JavaTest {
         configureItemUIRegistry(item.getState(), OnOffType.ON);
 
         // Disable long polling
-        when(headersMock.getRequestHeader(HTTP_HEADER_X_ATMOSPHERE_TRANSPORT)).thenReturn(null);
-
         Response response = sitemapResource.getPageData(headersMock, null, SITEMAP_MODEL_NAME, SITEMAP_NAME, null,
-                false);
+                false, null);
 
         PageDTO pageDTO = (PageDTO) response.getEntity();
         assertThat(pageDTO.id, is(SITEMAP_NAME));
