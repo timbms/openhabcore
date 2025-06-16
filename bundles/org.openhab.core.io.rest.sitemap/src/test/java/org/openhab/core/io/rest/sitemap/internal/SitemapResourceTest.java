@@ -195,7 +195,8 @@ public class SitemapResourceTest extends JavaTest {
         executeWithDelay(() -> sitemapResource.receive(itemEvent));
 
         // non-null is sufficient here.
-        Response response = sitemapResource.getSitemapData(headersMock, null, SITEMAP_MODEL_NAME, null, false, "long-polling");
+        Response response = sitemapResource.getSitemapData(headersMock, null, SITEMAP_MODEL_NAME, null, false,
+                "long-polling");
 
         SitemapDTO sitemapDTO = (SitemapDTO) response.getEntity();
         // assert that the item state change did trigger the blocking method to return
