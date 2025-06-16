@@ -168,6 +168,7 @@ public class SitemapResource
     public static final String PATH_SITEMAPS = "sitemaps";
     private static final String SEGMENT_EVENTS = "events";
     private static final String X_ACCEL_BUFFERING_HEADER = "X-Accel-Buffering";
+    private static final String X_ATMOSPHERE_TRANSPORT = "X-Atmosphere-Transport";
 
     private static final long TIMEOUT_IN_MS = 30000;
 
@@ -266,7 +267,7 @@ public class SitemapResource
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(operationId = "getSitemapByName", summary = "Get sitemap by name.", responses = {
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = SitemapDTO.class))) })
-    public Response getSitemapData(@Context HttpHeaders headers,
+    public Response getSitemapDataByName(@Context HttpHeaders headers,
             @HeaderParam(HttpHeaders.ACCEPT_LANGUAGE) @Parameter(description = "language") @Nullable String language,
             @PathParam("sitemapname") @Parameter(description = "sitemap name") String sitemapname,
             @QueryParam("type") String type, @QueryParam("jsoncallback") @DefaultValue("callback") String callback,
@@ -298,7 +299,8 @@ public class SitemapResource
             @HeaderParam(HttpHeaders.ACCEPT_LANGUAGE) @Parameter(description = "language") @Nullable String language,
             @PathParam("sitemapname") @Parameter(description = "sitemap name") String sitemapname,
             @QueryParam("subscriptionid") @Parameter(description = "subscriptionid") @Nullable String subscriptionId,
-            @QueryParam("includeHidden") @Parameter(description = "include hidden widgets") boolean includeHiddenWidgets) {
+            @QueryParam("includeHidden") @Parameter(description = "include hidden widgets") boolean includeHiddenWidgets,
+            @HeaderParam(X_ATMOSPHERE_TRANSPORT) @Parameter(name = "X-Atmosphere-Transport", description = "Used to enable Atmosphere transport") @Nullable String xAtmosphereTransport) {
         final Locale locale = localeService.getLocale(language);
         logger.debug("Received HTTP GET request from IP {} at '{}'", request.getRemoteAddr(), uriInfo.getPath());
 
@@ -311,7 +313,7 @@ public class SitemapResource
         }
 
         boolean timeout = false;
-        if (headers.getRequestHeader("X-Atmosphere-Transport") != null) {
+        if (xAtmosphereTransport != null) {
             timeout = blockUntilChangeOccurs(sitemapname, null);
         }
         SitemapDTO responseObject = getSitemapBean(sitemapname, uriInfo.getBaseUriBuilder().build(), locale,
@@ -331,7 +333,8 @@ public class SitemapResource
             @PathParam("sitemapname") @Parameter(description = "sitemap name") String sitemapname,
             @PathParam("pageid") @Parameter(description = "page id") String pageId,
             @QueryParam("subscriptionid") @Parameter(description = "subscriptionid") @Nullable String subscriptionId,
-            @QueryParam("includeHidden") @Parameter(description = "include hidden widgets") boolean includeHiddenWidgets) {
+            @QueryParam("includeHidden") @Parameter(description = "include hidden widgets") boolean includeHiddenWidgets,
+            @HeaderParam(X_ATMOSPHERE_TRANSPORT) @Parameter(name = "X-Atmosphere-Transport", description = "Used to enable Atmosphere transport") @Nullable String xAtmosphereTransport) {
         final Locale locale = localeService.getLocale(language);
         logger.debug("Received HTTP GET request from IP {} at '{}'", request.getRemoteAddr(), uriInfo.getPath());
 
@@ -344,7 +347,7 @@ public class SitemapResource
         }
 
         boolean timeout = false;
-        if (headers.getRequestHeader("X-Atmosphere-Transport") != null) {
+        if (xAtmosphereTransport != null) {
             // Make the REST-API pseudo-compatible with openHAB 1.x
             // The client asks Atmosphere for server push functionality,
             // so we do a simply listening for changes on the appropriate items
